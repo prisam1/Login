@@ -11,15 +11,14 @@ const isValid = function (value) {
     return true
 }
 const isValidNumber = function (value) {
-    if (typeof value !== "number") return false
-    return true
+   return /^[0-9]$/.test(value)
 }
 
 const isValidName = function(name){
     return /^[a-zA-Z\s]{2,20}$/.test(name.trim())
     }
 
-const validateDate = (datee) => {
+const validateDate = (date) => {
     return /^[1-2][0-9]{3}([\-])[0-9]{2}([\-])[0-9]{2}$/.test(date.trim())    
 
 }
@@ -38,4 +37,4 @@ const isValidObjectId = (objectId) => {
     return mongoose.Types.ObjectId.isValid(objectId) 
 }
 
-module.exports={checkInputsPresent,isValid,isValidNumber,isValidName,validateEmail,validateDate,isValidMobile,validPassword,isValidObjectId}
+module.exports={checkInputsPresent,isValid,isValidNumber,isValidName,validateEmail,isValidMobile,validPassword,isValidObjectId}

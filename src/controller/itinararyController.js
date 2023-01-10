@@ -1,7 +1,7 @@
 
-const itinarary= require("../model/itineraryModel")
+const itineraryModel= require("../model/itineraryModel")
 const user= require("../model/userModel")
-const {checkInputsPresent,isValidNumber,validateDate,isValid,isValidObjectId} =require("../valid/valid")
+const {checkInputsPresent,isValidNumber,isValid,isValidObjectId} =require("../valid/valid")
 const moment = require('moment')
 
 
@@ -11,46 +11,35 @@ try{
   if(!checkInputsPresent(req.body))
      return res.status(400).send({status: false,message: "Enter details to create your account"})
 
-  let {userId,from,to,data,activities,accommodation,totalcost}=req.body  
+  const {userId,from,to,date,activities,accommodation,totalcost}=req.body  
 
 
   if(!isValidObjectId(userId))
      return res.status(400).send({ status: false, message: "Please provide valid UserId"})
 
-  if(!isValid(from) && !isValidNumber(from))
-     return res.status(400).send({ status: false, message: "Date is required and should be Number"})
-
-  if(!isValid(to) && !isValidNumber(to))
-     return res.status(400).send({ status: false, message: "Date is required and should be Number"})
- 
-  if(!validateDate(from))
-     return res.status(400).send({ status: false, message: "Please provide valid date in format YYYY-MM-DD"})
-  if(!validateDate(to))
-     return res.status(400).send({ status: false, message: "Please provide valid date in format YYYY-MM-DD"})
-
-  let date = moment(from)
+  let date1 = moment(from)
   let date2= moment(to)
-  if(!date.isValid() && !date.isValid(date2))
-     return res.status(400).send({ status: false, message: "Please provide valid date"})
+
+  if(!isValid(date1))
+     return res.status(400).send({ status: false, message: "Date is required"})
+  if(!isValid(date2))
+     return res.status(400).send({ status: false, message: "Date is required"})
+
  
   if(!isValid(date))
      return res.status(400).send({ status: false, message: "Date is required"})
-  if(!isValidNumber(date))
-     return res.status(400).send({ status: false, message: "Date should be in Number"})
+
   if(!isValid(activities))
      return res.status(400).send({ status: false, message: "Activity is required"})
 
   if(!isValid(accommodation))
      return res.status(400).send({ status: false, message: "accommodation is required"})
-
+ 
   if(!isValid(totalcost))
      return res.status(400).send({ status: false, message: "Totalcost is required"})
-  if(!isValidNumber(totalcost))
-     return res.status(400).send({ status: false, message: "Totalcost Should be in Number"}) 
-
 
     
-  let result=await itinarary.create(req.body)
+  let result=await itineraryModel.create(req.body)
 
   res.status(201).send({status:true,message:"Successfully Created",data:result})
 
@@ -58,7 +47,7 @@ try{
 
 catch(err)
 {
-
+   return res.status(500).send({ status: false, message: err.message })
 }
 }
 
@@ -68,7 +57,7 @@ try{
            
   let id=req.params.id
       
-  let {userId,from,to,data,activities,accommodation,totalcost}=req.body  
+  let {userId,from,to,date,activities,accommodation,totalcost}=req.body  
 
   
   if(!isValidObjectId(userId))
@@ -79,8 +68,6 @@ if (from || from === "")
    if(!isValid(from))
      return res.status(400).send({ status: false, message: "Date should be Required"})
    
-   if(!isValidNumber(from))
-     return res.status(400).send({ status: false, message: "Date should be in Number"})
  }
 
  if (to || to === "")
@@ -88,25 +75,17 @@ if (from || from === "")
    if(!isValid(to))
    return res.status(400).send({ status: false, message: "Date should be Required"})
    
-   if(!isValidNumber(to))
-     return res.status(400).send({ status: false, message: "Date should be in Number"})
- }
-  if(!validateDate(from))
-     return res.status(400).send({ status: false, message: "Please provide valid date in format YYYY-MM-DD"})
-  if(!validateDate(to))
-     return res.status(400).send({ status: false, message: "Please provide valid date in format YYYY-MM-DD"})
-
-  let date = moment(from)
+}
+ 
+  let date1 = moment(from)
   let date2= moment(to)
-  if(!date.isValid() && !date.isValid(date2))
+  if(!isValid(date1) && !date.isValid(date2))
      return res.status(400).send({ status: false, message: "Please provide valid date"})
 
 if (date || date === "")
 {  if(!isValid(date))
      return res.status(400).send({ status: false, message: "Date is required"})
-   if(!isValidNumber(date))
-     return res.status(400).send({ status: false, message: "Date should be in Number"})
-
+ 
 }
 if (to || to === "")     
  { if(!isValid(activities))
@@ -120,12 +99,9 @@ if (totalcost || totalcost === "")
 {  
    if(!isValid(totalcost))
      return res.status(400).send({ status: false, message: "Totalcost is required"})   
-   if(!isValidNumber(totalcost))
-     return res.status(400).send({ status: false, message: "Totalcost Should be in Number"})   
-
-
+ 
 } 
-  let update=await itinarary.findByIdAndUpdate({_id:id},{...req.body},{new:true})
+  let update=await itineraryModel.findByIdAndUpdate({_id:id},{...req.body},{new:true})
 
   res.status(200).send({status:true,message:"Successfully Update",data:update})
 
@@ -147,7 +123,7 @@ try{
   if(!isValidObjectId(id))
      return res.status(400).send({ status: false, message: "Please provide valid UserId"})
 
-  let get=await itinarary.findById({_id:id})
+  let get=await itineraryModel.findById({_id:id})
 
   res.status(200).send({status:true,message:"done",data:get})
 

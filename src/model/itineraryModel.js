@@ -26,15 +26,15 @@ const ItinerarySchema = new mongoose.Schema({
     }],
     accommodation: [{
         from: {
-            type: Date
+            type: String
         },
         to: {
-            type: Date
+            type: String
         },
         hotelName: String,
         location: String
     }],
-    totalCost: {
+    totalcost: { 
         type: Number,
     },
     public: {

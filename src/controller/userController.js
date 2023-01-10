@@ -1,4 +1,6 @@
 const userModel = require("../model/userModel")
+const bcrypt = require("bcrypt")
+const jwt = require('jsonwebtoken')
 
 const {checkInputsPresent,isValid,isValidName,isValidMobile,validateEmail,validPassword} =require("../valid/valid")
 
@@ -37,7 +39,7 @@ const registeruser= async function(req,res)
         req.body.password = await bcrypt.hash(req.body.password, 10)
     
 
-       let userdata= await user.create(req.body)
+       let userdata= await userModel.create(req.body)
           
        return res.status(201).send({status:true,Message:"Successful",data:userdata})    
 
@@ -54,7 +56,7 @@ const registeruser= async function(req,res)
 const loginUser = async function (req, res) {
   try {
     let data = req.body
-    if (validate.isValidBody(data))
+    if (!checkInputsPresent(data))
       return res.status(400).send({ status: false, msg: "Email and Password is Requierd" })
 
     const { email, password } = data
@@ -65,7 +67,7 @@ const loginUser = async function (req, res) {
     if (!password)
       return res.status(400).send({ status: false, msg: "User Password is Requierd" })
 
-    if (!validate.isValidEmail(email))
+    if (!validateEmail(email))
       return res.status(400).send({ status: false, msg: "Enter Valid Email Id" })
 
     let user = await userModel.findOne({ email })

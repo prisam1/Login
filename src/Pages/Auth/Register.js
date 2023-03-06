@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux'
 import {Link} from 'react-router-dom'
 import { register } from '../../redux/authSlice'
 import { useNavigate } from "react-router-dom";
-
+import { useForm } from "react-hook-form";
+import { Form } from 'semantic-ui-react';
 import "../../style/register.css";
 const Register = () => {
   const [name, setName] = useState("");
@@ -14,26 +15,29 @@ const Register = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
  
+  
+   
   const handleRegister = async (e) => {
     e.preventDefault()
 
     try {
-      const res = await fetch(`http://localhost:5000/register`, {
+
+    
+      const res = await fetch(`http://localhost:5000/Register`, {
         headers: {
           'Content-Type': 'application/json'
         },
-        method: 'POST',
+        method: 'POST', 
         body: JSON.stringify({name,phone,email, password})
       })
       const data = await res.json()
       dispatch(register(data))
-      navigate('/')
+    navigate('/Register') 
     } catch (error) {
       setError(prev => true)
       setTimeout(() => {
-        setError(prev => false)
+        setError(prev => false) 
       }, 2500)
       console.error(error)
     }
@@ -54,9 +58,11 @@ const Register = () => {
               id="exampleInputEmail1"
               placeholder="Enter Your Name"
               required
-              autoFocus
-            />
+              />   
           </div>
+        
+           {error.name && <p>Please check the Last Name</p>}
+               
          
           <div className="mb-3">
             <input
@@ -91,18 +97,7 @@ const Register = () => {
               required
             />
           </div>
-          <div className="mb-3">
-            <input
-              type="text"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="form-control"
-              id="exampleInputEmail1"
-              placeholder="Re-Enter Your Password"
-              required
-            />
-          </div>
-         
+                 
           <button type="submit" className="btn btn-primary">
             REGISTER
           </button>

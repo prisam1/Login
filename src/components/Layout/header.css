@@ -16,7 +16,7 @@
     color: rgb(45, 248, 4);
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 60px;
-    margin: 1rem;
+    margin-left: 1rem;
   }
    .navbar-nav
   { 
@@ -24,16 +24,15 @@
     align-items: center;
     flex-direction: row;
   }
-  .nav-link-hom{
-    margin-left: 5px;
+  .nav-link{
+    margin-left: 85rem;
     flex-direction: row;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color:rgb(255, 255, 255); 
     
   }
-  .nav-link-hom:hover{
+  .nav-link:hover{
 
-    flex-direction: row;
     font-family:cursive;
     color:rgb(8, 130, 134); 
     font-size:larger;
@@ -41,14 +40,11 @@
   }
   .nav-link-reg{
     margin-left: 5px;
-    flex-direction: row;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color:rgb(255, 255, 255); 
 
   }
   .nav-link-reg:hover{
-
-    flex-direction: row;
     font-family:cursive;
     color:rgb(8, 130, 134); 
     font-size:larger;
@@ -57,14 +53,13 @@
  
   .nav-link-log{
     margin-left: 5px;
-    flex-direction: row;
+ 
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color:rgb(255, 255, 255); 
 
   }
   .nav-link-log:hover{
 
-    flex-direction: row;
     font-family: cursive;
     color:rgb(8, 130, 134); 
     font-size:larger;

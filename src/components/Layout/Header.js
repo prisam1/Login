@@ -26,7 +26,7 @@ const Header = () => {
             <h1>React</h1>
             <ul className="navbar-nav">
               <li>
-                <Link to="/" className="nav-link-hom ">
+                <Link to="/" className="nav-link">
                   Home
                 </Link>
               </li>

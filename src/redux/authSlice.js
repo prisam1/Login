@@ -12,7 +12,7 @@ export const authSlice = createSlice({
     login(state, action) {
       localStorage.clear()
       state.user = action?.payload?.others
-      state.token = action?.payload?.token
+      state.token = action?.payload?.token 
     },
     register(state, action) {
       localStorage.clear()

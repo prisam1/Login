@@ -28,7 +28,7 @@ const Login = () => {
         }
         const data = await res.json()
         dispatch(login(data))
-        navigate('/')
+        navigate('/Dashboard')
     } catch (error) {
         setError(prev => true)
         setTimeout(() => {

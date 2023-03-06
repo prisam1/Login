@@ -7,6 +7,7 @@ import Login from "./Pages/Auth/Login";
 import { useSelector } from 'react-redux'
 import Footer from "./components/Layout/Footer";
 import  Header  from "./components/Layout/Header";
+import Dashboard from "./Pages/Dashboard";
 import "../src/App.css"
 
 function App() {
@@ -16,9 +17,13 @@ function App() {
     <Header/>
       <Routes>      
         <Route path="/" element={<HomePage/>} />
-        <Route path='/login' element={!user ? <Login /> : <Navigate to='/' />} />
-        <Route path='/register' element={!user ? <Register /> : <Navigate to='/' />} />
+        <Route path='/login' element={user ? <Navigate to='/Dashboard' /> : <Login />} />
+        <Route path='/Register' element={!user ? <Register /> : <Navigate to='/Login' />} />
+
         <Route path="*" element={<Pagenotfound />} />
+
+        <Route path='/Dashboard' element={<Dashboard/>}/>
+
       </Routes>
       <Footer/>
 

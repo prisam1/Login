@@ -47,6 +47,7 @@ const registeruser= async function(req,res)
 
   catch(err)
   {
+    console.log(err)
     return res.status(500).send({status: false, message: err.message})
   }
 
@@ -80,7 +81,7 @@ const loginUser = async function (req, res) {
       return res.status(400).send({ status: false, msg: "Incorrect password" })
 
 
-    let token = jwt.sign({ userId: user._id }, "HiPal", {
+    let token = jwt.sign({ userId: user._id }, "blank", {
       expiresIn: "2d",
     })
 
@@ -91,6 +92,30 @@ const loginUser = async function (req, res) {
     return res.status(500).send({ status: false, msg: err.message })
   }
 }
+ 
+const Logout = async(req, res) => {
+  const refreshToken = req.cookies.refreshToken
+
+  if(!refreshToken) 
+  return res.sendStatus(204)
+  const user = await userModel.find({
+      where:{
+          refresh_token: refreshToken
+      }
+  })
+  if(!user) return res.sendStatus(204)
+  const userId = user.id
+  await userModel.update({refresh_token: null},{
+      where:{
+          id: userId
+      }
+  });
+  res.clearCookie('refreshToken');
+  return res.sendStatus(200);
+}
 
 
-module.exports={registeruser,loginUser}
+module.exports={registeruser,loginUser,Logout}
+
+ 
+

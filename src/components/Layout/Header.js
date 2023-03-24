@@ -1,80 +1,88 @@
-import React ,{useState} from "react";
+import React from "react";
 import { Link, useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { logout } from "../../redux/authSlice"
-import "./header.css"
+import "../../style/header.css"
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const { user } = useSelector((state) => state.auth)
+  // const { user } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  window.onscroll = () => {
-    setIsScrolled(window.pageYOffset === 0 ? false : true)
-    return () => (window.onscroll = null)
-  }
 
+  // window.onscroll = () => {
+  //   setIsScrolled(window.pageYOffset === 0 ? false : true)
+  //   return () => (window.onscroll = null)
+  // }
+
+  function td(){
+  if(localStorage.getItem("token"))
+    {
+      navigate('/Dashboard')
+    } 
+}
+td()
+   
   const handleLogout = () => {
+    
+    navigate('/login') 
     dispatch(logout())
-    navigate('/login')
+    
+    // localStorage.removeItem('token');
+    
  }
 
   return (
     <>
-      <nav className="navbar">
-        <div className="container-fluid">   
-            <h1>React</h1>
-            <ul className="navbar-nav">
-              <li>
+         <div className="top">  
+         
+            <h1 className="h1">React</h1>
+            <div className="navbar-nav">
+              
+             
+              {!(localStorage.getItem("token"))? (
+                <>
+                  <div>
                 <Link to="/" className="nav-link">
                   Home
                 </Link>
-              </li>
-             
-              {!user ? (
-                <>
-                  <li>
-                    <Link to="/register" className="nav-link-reg">
+               </div>
+                  <div>
+                    <Link to="/Register" className="nav-link-reg">
                       Register
                     </Link>
-                  </li>
-                  <li className="nav-item">
+                  </div>
+                  <div className="nav-item">
                     <Link to="/login" className="nav-link-log">
                       Login
                     </Link>
-                  </li>
+                  </div>
+                                  
                 </>
               ) : (
                 <>
-                  <li className="nav-item dropdown">
-                    <Link
-                      className="nav-link dropdown-toggle"
-                      href="#"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      {user.name}
-                    </Link>
-                    <ul className="dropdown-menu">
-                    
-                      <li>
+                 
+                     <div className="user"> 
+                     {localStorage.getItem('token') &&
+                     
+               <div className="user-name">Welcome, <Link to="/Dashboard" className="nav-link-reg">
+               {localStorage.getItem('name')}</Link></div>
+              }
+                  </div>
+                      <div>
                         <Link
-                          onClick={handleLogout}
-                          to="/login"
-                          className="dropdown-item"
-                        >
+                          onClick={handleLogout} className="logout">
                           Logout
                         </Link>
-                      </li>
-                    </ul>
-                  </li>
+                                             
+                      
+                    
+                  </div>
                 </>
               )}
              
-            </ul>
+            </div>
           </div>
-        </nav>
+          
     </>
   );
 };

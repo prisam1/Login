@@ -4,25 +4,27 @@ import HomePage from "./Pages/HomePage";
 import Pagenotfound from "./Pages/PageNotFound";
 import Register from "./Pages/Auth/Register";
 import Login from "./Pages/Auth/Login";
-import { useSelector } from 'react-redux'
 import Footer from "./components/Layout/Footer";
 import  Header  from "./components/Layout/Header";
 import Dashboard from "./Pages/Dashboard";
+import CreateIt from "./Pages/CreateIt"
 import "../src/App.css"
 
 function App() {
-  const { user } = useSelector((state) => state.auth)
+  // const { user } = useSelector((state) => state.auth)'
+    let token=localStorage.getItem("token")
   return (
-    <>
+    <> 
     <Header/>
       <Routes>      
-        <Route path="/" element={<HomePage/>} />
-        <Route path='/login' element={user ? <Navigate to='/Dashboard' /> : <Login />} />
-        <Route path='/Register' element={!user ? <Register /> : <Navigate to='/Login' />} />
-
+        <Route path="/" element={<HomePage />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/Register' element={<Register /> } />
+        <Route path='/Dashboard' element={<Dashboard />} />
+        <Route path='/CreateIt' element={<CreateIt />} />
         <Route path="*" element={<Pagenotfound />} />
 
-        <Route path='/Dashboard' element={<Dashboard/>}/>
+        
 
       </Routes>
       <Footer/>

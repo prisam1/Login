@@ -15,10 +15,25 @@ export const authSlice = createSlice({
       state.token = action?.payload?.token 
     },
     register(state, action) {
-      localStorage.clear()
+      
       state.user = action?.payload?.others
       state.token = action?.payload?.token
 
+    },
+    createIt(state, action) {
+      
+      state.user = action?.payload?.others
+      state.token = action?.payload?.token 
+    },
+    updateIt(state, action) {
+      
+      state.user = action?.payload?.others
+      state.token = action?.payload?.token 
+    },
+    getIt(state, action) {
+     
+      state.user = action?.payload?.others
+      state.token = action?.payload?.token 
     },
     logout(state) {
        state.user = null
@@ -28,6 +43,6 @@ export const authSlice = createSlice({
   },
 })
 
-export const { login, register, logout } = authSlice.actions
+export const { login, register, logout, createIt, updateIt, getIt } = authSlice.actions
 
 export default authSlice.reducer

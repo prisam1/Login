@@ -1,0 +1,31 @@
+.pnf {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+  }
+  .pnf-btns{
+    margin-top:-2rem;
+    background-color:rgb(246, 250, 6);
+    color: rgb(92, 6, 230);
+    border: 1px solid rgb(32, 31, 31);
+    text-decoration: none;
+    padding:7px;
+    border-radius: 2px;
+   
+  }
+  .pnf-btns:hover{
+  
+    background-color: rgb(228, 220, 220);
+    color: white;
+    padding:7px;
+    background: linear-gradient(
+      to right,
+      #9100f1,
+      #ff6666
+    );
+
+  }
+ 
+

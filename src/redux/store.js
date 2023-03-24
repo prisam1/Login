@@ -22,7 +22,7 @@ const persistConfig = {
 
 const reducers = combineReducers({
   auth: authSlice,
- // search: searchSlice,
+  //search: searchSlice,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers);

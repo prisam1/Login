@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux'
 import {Link} from 'react-router-dom'
 import { register } from '../../redux/authSlice'
 import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { Form } from 'semantic-ui-react';
+import Login from "../Auth/Login"
 import "../../style/register.css";
 const Register = () => {
   const [name, setName] = useState("");
@@ -23,21 +22,20 @@ const Register = () => {
 
     try {
 
-    
-      const res = await fetch(`http://localhost:5000/Register`, {
+      const res = await fetch(`http://localhost:5000/register`, {
         headers: {
           'Content-Type': 'application/json'
         },
-        method: 'POST', 
-        body: JSON.stringify({name,phone,email, password})
+        method: 'POST',
+        body: JSON.stringify({name,email,phone,password})
       })
       const data = await res.json()
       dispatch(register(data))
-    navigate('/Register') 
+      navigate('/login')
     } catch (error) {
       setError(prev => true)
       setTimeout(() => {
-        setError(prev => false) 
+        setError(prev => false)
       }, 2500)
       console.error(error)
     }
@@ -60,10 +58,7 @@ const Register = () => {
               required
               />   
           </div>
-        
-           {error.name && <p>Please check the Last Name</p>}
-               
-         
+                 
           <div className="mb-3">
             <input
               type="email"
@@ -97,11 +92,12 @@ const Register = () => {
               required
             />
           </div>
-                 
+          
           <button type="submit" className="btn btn-primary">
             REGISTER
           </button>
-          <p>Don't have an account? <Link to='/Login' className="link">Login</Link></p>
+          
+          <p>Already have an account? <Link to='/Login' className="link">Login</Link></p>
         </form>
       </div>
     

@@ -1,13 +1,11 @@
 .footer {
     
     width: 100%;
-    height: 6rem;
+    height: 5.5rem;
     background: linear-gradient(
     to right,
     #f03333,
-    #520088
-
-    
+    #520088   
   );
     display: flex;
     justify-content: center;
@@ -15,6 +13,9 @@
     font-weight: 600;
     font-family: "roboto", sans-serif;
     letter-spacing: 1px; 
+    position:absolute;
+    bottom:0;
+      
   }
   
    

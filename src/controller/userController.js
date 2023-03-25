@@ -81,41 +81,19 @@ const loginUser = async function (req, res) {
       return res.status(400).send({ status: false, msg: "Incorrect password" })
 
 
-    let token = jwt.sign({ userId: user._id }, "blank", {
+    let token = jwt.sign({ userId: user._id, name:user.name }, "blank", {
       expiresIn: "2d",
     })
-
+  
     return res.status(200).send({status: true, message: "User login successfully",
-        data: { userId: user._id, token: token },
+        data: { userId: user._id, name:user.name, token: token },
       })
   } catch (err) {
     return res.status(500).send({ status: false, msg: err.message })
   }
 }
  
-const Logout = async(req, res) => {
-  const refreshToken = req.cookies.refreshToken
-
-  if(!refreshToken) 
-  return res.sendStatus(204)
-  const user = await userModel.find({
-      where:{
-          refresh_token: refreshToken
-      }
-  })
-  if(!user) return res.sendStatus(204)
-  const userId = user.id
-  await userModel.update({refresh_token: null},{
-      where:{
-          id: userId
-      }
-  });
-  res.clearCookie('refreshToken');
-  return res.sendStatus(200);
-}
-
-
-module.exports={registeruser,loginUser,Logout}
+module.exports={registeruser,loginUser}
 
  
 

@@ -2,6 +2,7 @@
 const itineraryModel= require("../model/itineraryModel")
 const user= require("../model/userModel")
 const {checkInputsPresent,isValidNumber,isValid,isValidObjectId} =require("../valid/valid")
+const {login}= require("../controller/userController")
 const moment = require('moment')
 
 
@@ -11,34 +12,38 @@ try{
   if(!checkInputsPresent(req.body))
      return res.status(400).send({status: false,message: "Enter details to create your account"})
 
-  const {userId,from,to,date,activities,accommodation,totalcost}=req.body  
-
-
+  const {userId,name,from,to,date,location,duration,hotelName,totalcost}=req.body  
+   
   if(!isValidObjectId(userId))
      return res.status(400).send({ status: false, message: "Please provide valid UserId"})
 
   let date1 = moment(from)
   let date2= moment(to)
-
+  let date3= moment(date)
   if(!isValid(date1))
      return res.status(400).send({ status: false, message: "Date is required"})
+
   if(!isValid(date2))
      return res.status(400).send({ status: false, message: "Date is required"})
 
- 
-  if(!isValid(date))
+  if(!isValid(date3))
      return res.status(400).send({ status: false, message: "Date is required"})
+ 
+  if(!isValid(name))
+     return res.status(400).send({ status: false, message: "Name is required"})
 
-  if(!isValid(activities))
-     return res.status(400).send({ status: false, message: "Activity is required"})
+  if(!isValid(duration))
+     return res.status(400).send({ status: false, message: "Duration is required"})
 
-  if(!isValid(accommodation))
-     return res.status(400).send({ status: false, message: "accommodation is required"})
+  if(!isValid(location))
+     return res.status(400).send({ status: false, message: "Location is required"})
+   
+  if(!isValid(hotelName))
+  return res.status(400).send({ status: false, message: "Hotel Name is required"})
  
   if(!isValid(totalcost))
      return res.status(400).send({ status: false, message: "Totalcost is required"})
 
-    
   let result=await itineraryModel.create(req.body)
 
   res.status(201).send({status:true,message:"Successfully Created",data:result})
@@ -55,26 +60,31 @@ const itinararyupdate = async function(req,res)
 {
 try{ 
            
-  let id=req.params.id
-      
-  let {userId,from,to,date,activities,accommodation,totalcost}=req.body  
-
   
+      
+  let {userId,name,from,to,date,location,duration,hotelName,totalcost}=req.body  
+ 
+  
+    
   if(!isValidObjectId(userId))
      return res.status(400).send({ status: false, message: "Please provide valid UserId"})
 
 if (from || from === "")   
  { 
    if(!isValid(from))
-     return res.status(400).send({ status: false, message: "Date should be Required"})
-   
+     return res.status(400).send({ status: false, message: "Date should be Required"})  
  }
 
  if (to || to === "")
  { 
    if(!isValid(to))
-   return res.status(400).send({ status: false, message: "Date should be Required"})
-   
+   return res.status(400).send({ status: false, message: "Date should be Required"})  
+}
+if (name || name === "")
+{ 
+  if(!isValid(name))
+  return res.status(400).send({ status: false, message: "Name should be Required"})
+  
 }
  
   let date1 = moment(from)
@@ -87,13 +97,18 @@ if (date || date === "")
      return res.status(400).send({ status: false, message: "Date is required"})
  
 }
-if (to || to === "")     
- { if(!isValid(activities))
-     return res.status(400).send({ status: false, message: "Activity is required"})
+if (location || location === "")     
+ { if(!isValid(location))
+     return res.status(400).send({ status: false, message: "Location is required"})
  }
-if (accommodation || accommodation === "")
-{ if(!isValid(accommodation))
-     return res.status(400).send({ status: false, message: "Accomodati is required"})
+if (duration || duration === "")
+{ if(!isValid(duration))
+     return res.status(400).send({ status: false, message: "Duration is required"})
+}
+
+if (hotelName || hotelName === "")
+{ if(!isValid(hotelName))
+     return res.status(400).send({ status: false, message: "Hotel Name is required"})
 }
 if (totalcost || totalcost === "")
 {  
@@ -101,7 +116,7 @@ if (totalcost || totalcost === "")
      return res.status(400).send({ status: false, message: "Totalcost is required"})   
  
 } 
-  let update=await itineraryModel.findByIdAndUpdate({_id:id},{...req.body},{new:true})
+  let update=await itineraryModel.findByIdAndUpdate({_id:userId},{...req.body},{new:true})
 
   res.status(200).send({status:true,message:"Successfully Update",data:update})
 
@@ -117,13 +132,12 @@ catch(err)
 const itinararyget= async function(req,res)
 {
 try{ 
-           
-  let id=req.params.id
+   
+  
+//   if(!isValidObjectId(user))
+//      return res.status(400).send({ status: false, message: "Please provide valid UserId"})
 
-  if(!isValidObjectId(id))
-     return res.status(400).send({ status: false, message: "Please provide valid UserId"})
-
-  let get=await itineraryModel.findById({_id:id})
+  let get=await itineraryModel.find()
 
   res.status(200).send({status:true,message:"done",data:get})
 

@@ -7,6 +7,7 @@ const ItinerarySchema = new mongoose.Schema({
         ref: "User",
         required:true
     },
+    name:{type: String}, 
     from: {
         type: String,
         required: true
@@ -16,26 +17,16 @@ const ItinerarySchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: Date,
+        type: String,
         required: true
-    },
-    activities: [{
-        name: String,
-        location: String,
-        duration: Number
-    }],
-    accommodation: [{
-        from: {
-            type: String
-        },
-        to: {
-            type: String
-        },
-        hotelName: String,
-        location: String
-    }],
+    },        
+    location:{type:String},
+
+    duration:{type:String},
+    
+    hotelName:{ type: String},
     totalcost: { 
-        type: Number,
+        type: Number
     },
     public: {
         type: Boolean,

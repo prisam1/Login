@@ -1,5 +1,5 @@
 import React from "react";
-import {useState} from "react"
+import {useState, useEffect} from "react"
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import "../style/dashboard.css"
@@ -9,21 +9,17 @@ const Dashboard = () => {
   
   const [result, setResult] = useState();
   const navigate = useNavigate()
-
-  async function getapi() {
-    
-   
-
-    
-    const res =await fetch("http://localhost:5000/ItinararyGet", {
+ 
+       useEffect(()=>{
+     fetch("http://localhost:5000/ItinararyGet", {
       method: "GET",
       headers: {"Authorization": `Bearer ${token}`},
      
     })
     .then(res => res.json())
     .then(json => setResult(json));
-  
-
+  },[]);
+      
     if (result) {
       show(result)
       function show(resp) {
@@ -33,9 +29,9 @@ const Dashboard = () => {
           navigate('/Dashboard')
         }  
         else{navigate('/login')}  
-       
-       
-         const data=resp.data
+          
+       const data=resp.data
+         
         let tab = 
             `<tr> 
               <th>Name</th>
@@ -61,19 +57,13 @@ const Dashboard = () => {
         <td>${d.totalcost}</td>
         
                 
-    </tr>`;
+     </tr>`;
         }
         document.getElementById("cust").innerHTML = tab;
     }
     
     }
-    
-  
-}
-
-getapi() 
-
-  
+      
   return (
     <div className="Dashboard-home">
      
@@ -102,6 +92,9 @@ getapi()
      
      <div className="datacontent">
      <table id="cust" className="tab"></table>
+     
+
+
      </div>
     </div>
   );

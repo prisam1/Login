@@ -36,15 +36,13 @@ const CreateIt = () => {
       const data = await res.json()
       dispatch(createIt(data))
       
-function show() { 
-      if(token)
+      if(!token)
       {
-        navigate('/CreateIt')
+        navigate('/login')
       }  
-      else{navigate('/login')}  
+      else{navigate('/CreateIt')}  
          
-}
-show()
+
     
   }
 

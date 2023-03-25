@@ -40,7 +40,7 @@ const Login = () => {
     localStorage.setItem("token", token)    
     localStorage.setItem("name", name)  
     if (token) {
-             
+              navigate('/Dashboard')  
               axios.defaults.headers.common.Authorization = `Bearer ${token}`;
              
           }

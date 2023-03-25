@@ -4,31 +4,22 @@ import { useDispatch } from 'react-redux'
 import { logout } from "../../redux/authSlice"
 import "../../style/header.css"
 const Header = () => {
-  // const { user } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
 
-  // window.onscroll = () => {
-  //   setIsScrolled(window.pageYOffset === 0 ? false : true)
-  //   return () => (window.onscroll = null)
-  // }
 
-  function td(){
-  if(localStorage.getItem("token"))
-    {
-      navigate('/Dashboard')
-    } 
-}
-td()
+
+
    
   const handleLogout = () => {
     
+    if(!(localStorage.getItem("token")))
+   {  
     navigate('/login') 
+   }
     dispatch(logout())
-    
-    // localStorage.removeItem('token');
-    
+        
  }
 
   return (

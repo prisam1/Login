@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from 'react-redux' 
-import {Link} from 'react-router-dom'
+// import {Link} from 'react-router-dom'
 import { createIt } from '../redux/authSlice'
 import { useNavigate } from "react-router-dom";
 
@@ -15,7 +15,7 @@ const CreateIt = () => {
   const [hotelName, setHotelName] = useState("");
   const [totalcost, setTotalcost] = useState("");
   const [duration, setDuration] = useState("");
-  const [error, setError] = useState(false)  
+ 
 
   const dispatch = useDispatch()
   const navigate = useNavigate()

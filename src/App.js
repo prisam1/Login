@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route} from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import Pagenotfound from "./Pages/PageNotFound";
 import Register from "./Pages/Auth/Register";
@@ -12,7 +12,7 @@ import "../src/App.css"
 
 function App() {
   // const { user } = useSelector((state) => state.auth)'
-    let token=localStorage.getItem("token")
+    
   return (
     <> 
     <Header/>

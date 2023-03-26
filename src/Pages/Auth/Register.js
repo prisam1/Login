@@ -3,14 +3,12 @@ import { useDispatch } from 'react-redux'
 import {Link} from 'react-router-dom'
 import { register } from '../../redux/authSlice'
 import { useNavigate } from "react-router-dom";
-import Login from "../Auth/Login"
 import "../../style/register.css";
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [error, setError] = useState(false)  
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -20,7 +18,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault()
 
-    try {
+ 
 
       const res = await fetch(`http://localhost:5000/register`, {
         headers: {
@@ -32,13 +30,7 @@ const Register = () => {
       const data = await res.json()
       dispatch(register(data))
       navigate('/login')
-    } catch (error) {
-      setError(prev => true)
-      setTimeout(() => {
-        setError(prev => false)
-      }, 2500)
-      console.error(error)
-    }
+
   }
 
   return (

@@ -1,4 +1,5 @@
-import React, { useState, axios} from "react";
+import React, { useState} from "react";
+import axios from "axios"
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from '../../redux/authSlice'
@@ -10,16 +11,15 @@ const Login = () => {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [error, setError] = useState(false)
-  const [result, setResult] = useState();
+  // const [result, setResult] = useState();
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const handleLogin = async(e) => {
     e.preventDefault()
-    try {
+  
     
-        const res = await fetch(`http://localhost:5000/login`, {
+        await fetch(`http://localhost:5000/login`, {
     headers: {
       'Content-Type': 'application/json'
   },
@@ -53,18 +53,12 @@ const Login = () => {
 })     
 
 
-if(res.status === 404){
-  throw new Error("Wrong credentials")
-}
 
 
 
-} catch (error) {
-setError(prev => true)
-setTimeout(() => {
-  setError(prev => false)
-}, 2500)
-}
+
+
+
   
   }
   return (

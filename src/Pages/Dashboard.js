@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "../style/dashboard.css"
 
 const Dashboard = () => {
-  const token = localStorage.getItem("token");
+//   const token = localStorage.getItem("token");
   
   const [result, setResult] = useState();
   const navigate = useNavigate()
@@ -13,7 +13,7 @@ const Dashboard = () => {
        useEffect(()=>{
      fetch("http://localhost:5000/ItinararyGet", {
       method: "GET",
-      headers: {"Authorization": `Bearer ${token}`},
+      headers: {"Authorization": `Bearer`},
      
     })
     .then(res => res.json())

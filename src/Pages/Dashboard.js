@@ -5,12 +5,13 @@ import { Link } from "react-router-dom";
 import "../style/dashboard.css"
 
 const Dashboard = () => {
-  const token = localStorage.getItem("token");
+  
   
   const [result, setResult] = useState();
   const navigate = useNavigate()
- 
-       useEffect(()=>{
+  
+   useEffect(()=>{
+        const token = localStorage.getItem("token");
      fetch("http://localhost:5000/ItinararyGet", {
       method: "GET",
       headers: {"Authorization": `Bearer ${token}`},
@@ -61,9 +62,9 @@ const Dashboard = () => {
         }
         document.getElementById("cust").innerHTML = tab;
     }
+  } 
     
-    }
-      
+    
   return (
     <div className="Dashboard-home">
      

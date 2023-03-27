@@ -14,11 +14,12 @@ const Header = () => {
    
   const handleLogout = () => {
     
+    dispatch(logout())
     if(!(localStorage.getItem("token")))
    {  
     navigate('/login') 
    }
-    dispatch(logout())
+    
         
  }
 

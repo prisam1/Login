@@ -12,7 +12,7 @@ const Dashboard = () => {
   
    useEffect(()=>{
         const token = localStorage.getItem("token");
-     fetch("http://localhost:5000/ItinararyGet", {
+     fetch("https://cust-rks8.onrender.com/ItinararyGet", {
       method: "GET",
       headers: {"Authorization": `Bearer ${token}`},
      

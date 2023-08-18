@@ -19,7 +19,7 @@ const Login = () => {
     e.preventDefault()
   
     
-        await fetch(`http://localhost:5000/login`, {
+        await fetch(`https://cust-rks8.onrender.com/login`, {
     headers: {
       'Content-Type': 'application/json'
   },

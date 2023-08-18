@@ -25,7 +25,7 @@ const CreateIt = () => {
          
       const token = localStorage.getItem("token");
       
-      const res = await fetch(`http://localhost:5000/CreateItinarary`, {
+      const res = await fetch(`https://cust-rks8.onrender.com/CreateItinarary`, {
         headers: {
           'Content-Type': 'application/json',
           "Authorization": `Bearer ${token}`

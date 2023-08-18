@@ -20,7 +20,7 @@ const Register = () => {
 
  
 
-      const res = await fetch(`https://cust-rks8.onrender.com/register`, {
+      const res = await fetch(`https://cust-rks8.onrender.com/Register`, {
         headers: {
           'Content-Type': 'application/json'
         },

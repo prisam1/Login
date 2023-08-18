@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGO_STRING,
     .catch(err => console.log(err))
 
  app.use('/', route)
- app.listen(process.env.PORT, function (){console.log("Application is connected to the Port")})
+ app.listen(process.env.PORT || 5000, function (){console.log("Application is connected to the Port")})
 
 
 

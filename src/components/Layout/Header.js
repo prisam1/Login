@@ -17,7 +17,7 @@ const Header = () => {
 
   return (
     <div className="top">
-      <h1 className="h1">React</h1>
+      <h1 className="h1">Itinerary</h1>
       <div className="navbar-nav">
         {!localStorage.getItem("token") ? (
           <>

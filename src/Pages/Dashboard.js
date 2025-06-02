@@ -1,102 +1,109 @@
-import React from "react";
-import {useState, useEffect} from "react"
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import "../style/dashboard.css"
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import "../style/dashboard.css";
+
+const ITEMS_PER_PAGE = 10;
 
 const Dashboard = () => {
-  
-  
-  const [result, setResult] = useState();
-  const navigate = useNavigate()
-  
-   useEffect(()=>{
-        const token = localStorage.getItem("token");
-     fetch("https://cust-rks8.onrender.com/ItinararyGet", {
-      method: "GET",
-      headers: {"Authorization": `Bearer ${token}`},
-     
-    })
-    .then(res => res.json())
-    .then(json => setResult(json));
-  },[]);
-      
-    if (result) {
-      show(result)
-      function show(resp) {
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
 
-        if(localStorage.getItem("token"))
-        {
-          navigate('/Dashboard')
-        }  
-        else{navigate('/login')}  
-          
-       const data=resp.data
-         
-        let tab = 
-            `<tr> 
-              <th>Name</th>
-              <th>To</th>
-              <th>From</th>
-              <th>Date</th>
-              <th>Location</th>
-              <th>Duration</th>
-              <th>Hotel Name</th>
-              <th>Total</th>
-             </tr>`;
-        
-       
-        for (let d of data) {
-            tab += `<tr> 
-        <td>${d.name} </td>
-        <td>${d.to}</td> 
-        <td>${d.from}</td>
-        <td>${d.date}</td> 
-        <td>${d.location}</td>
-        <td>${d.duration}</td> 
-        <td>${d.hotelName}</td>
-        <td>${d.totalcost}</td>
-        
-                
-     </tr>`;
-        }
-        document.getElementById("cust").innerHTML = tab;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
     }
-  } 
-    
-    
+
+    fetch("https://cust-rks8.onrender.com/ItinararyGet", {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json?.data) setData(json.data);
+      });
+  }, [navigate]);
+
+  const formatDate = (dateStr) => {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("en-GB", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    });
+  };
+
+  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
+  const startIdx = (currentPage - 1) * ITEMS_PER_PAGE;
+  const currentItems = data.slice(startIdx, startIdx + ITEMS_PER_PAGE);
+
+  const handlePrev = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  const handleNext = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+
   return (
     <div className="Dashboard-home">
-     
-     <div className="topcontent">
-      <div>
-      <Link to="/CreateIt">
-      <button type="submit" className="dashcontent">
-      Create Itinarary
-      </button>
-      </Link>
+      <div className="topcontent">
+        <Link to="/CreateIt">
+          <button className="dashcontent">Create Itinerary</button>
+        </Link>
+        <button className="dashcontent">Itinerary Update</button>
+        <button className="dashcontent">Itinerary Data</button>
       </div>
 
-      <div>
-      <button type="submit" className="dashcontent">    
-      Itinarary Update
-      </button>
+      <div className="datacontent">
+        <div className="table-container">
+          <table className="styled-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>To</th>
+                <th>From</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Duration</th>
+                <th>Hotel Name</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((d, index) => (
+                <tr key={index}>
+                  <td>{d.name}</td>
+                  <td>{d.to}</td>
+                  <td>{d.from}</td>
+                  <td>{formatDate(d.date)}</td>
+                  <td>{d.location}</td>
+                  <td>{d.duration}</td>
+                  <td>{d.hotelName}</td>
+                  <td>{d.totalcost}₹</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button onClick={handlePrev} disabled={currentPage === 1}>
+                Prev
+              </button>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <button onClick={handleNext} disabled={currentPage === totalPages}>
+                Next
+              </button>
+            </div>
+          )}
+        </div>
       </div>
-
-      <div>
-      <button type="submit" className="dashcontent">  
-      Itinarary Data
-      </button>
-      </div>
-
-     </div>
-     
-     <div className="datacontent">
-     <table id="cust" className="tab"></table>
-     
-
-
-     </div>
     </div>
   );
 };

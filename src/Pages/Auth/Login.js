@@ -62,9 +62,6 @@ const Login = () => {
   
   }
   return (
-    <>
-     
-
       <div className="container">
         <form onSubmit={handleLogin}>
           <h4 className="title">Log In</h4>
@@ -98,8 +95,7 @@ const Login = () => {
           </button>
           <p>Don't have an account? <Link to='/register' className="link">Register</Link></p>
         </form>
-      </div>
-      </>
+      </div> 
   );
 };
 

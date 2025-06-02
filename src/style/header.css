@@ -25,47 +25,42 @@
     align-items: center;
     flex-direction: row;
     margin-right:50px;
+    gap:18px;
+
   }
-  .nav-link{
-   
-    flex-direction: row;
+  .nav-link-home{  
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color:rgb(255, 255, 255); 
-    
-    
+    display: inline-block;  
+    transition: transform 0.3s ease, color 0.3s ease;
   }
-  .nav-link:hover{
-
-    font-family:cursive;
-    color:rgb(8, 130, 134); 
-    font-size:larger;
+  .nav-link-home:hover{
+    color:rgb(68, 8, 163); 
+    transform: scale(1.2);
  
   }
-  .nav-link-reg{
-    margin-left: 5px;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color:rgb(255, 255, 255); 
-
-  }
-  .nav-link-reg:hover{
-    font-family:cursive;
-    color:rgb(8, 130, 134); 
-    font-size:larger;
+  .nav-link-reg{ 
+     color:rgb(255, 255, 255); 
+     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+     display: inline-block;  
+     transition: transform 0.3s ease, color 0.3s ease;
  
   }
+  .nav-link-reg:hover{ 
+    color:rgb(68, 8, 163); 
+    transform: scale(1.2);
+  }
  
-  .nav-link-log{
-    margin-left: 5px;
- 
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color:rgb(255, 255, 255); 
+  .nav-link-log{ 
+   color:rgb(255, 255, 255); 
+   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+   display: inline-block;  
+   transition: transform 0.3s ease, color 0.3s ease;
 
   }
-  .nav-link-log:hover{
-
-    font-family: cursive;
-    color:rgb(8, 130, 134); 
-    font-size:larger;
+  .nav-link-log:hover{ 
+    color:rgb(68, 8, 163); 
+    transform: scale(1.2);
  
   }
 
@@ -88,7 +83,7 @@
   
   .logout:hover{
    font-family:cursive;
-  color:rgb(8, 130, 134); 
+  color:rgb(68, 8, 163); 
   font-size:larger;
   }
  

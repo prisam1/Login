@@ -18,17 +18,18 @@
       
   }
   
-   
-  .footer>a:hover {
-      border-bottom: 1px solid #ffc400;
-      color: rgb(230, 170, 4);
-      font-family: cursive;
-      font-size:larger ;
-  }
-
   .footer a {
     text-decoration: none;
+    font-family: cursive;
     color: white;
     padding: 10px;
+    display: inline-block;  
+    transition: transform 0.3s ease, color 0.3s ease;
+
   }
   
+  .footer>a:hover {
+    border-bottom: 1px solid #ffc400;
+    color: rgb(230, 170, 4);
+    transform: scale(1.2);
+}

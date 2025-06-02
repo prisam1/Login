@@ -1,1 +1,1 @@
-### Deployed link - 'https://pritams1.netlify.app'
+### Live link - 'https://pritams1.netlify.app'

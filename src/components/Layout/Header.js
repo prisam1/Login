@@ -16,11 +16,15 @@ const Header = () => {
   };
 
   return (
-    <div className="top">
-      <h1 className="h1">Itinerary</h1>
-      <div className="navbar-nav">
+    <div className="header"> 
         {!localStorage.getItem("token") ? (
           <>
+            <div>
+              <Link to="/">
+              <h1 className="h1">Itinerary</h1> 
+              </Link>
+            </div> 
+
             <div>
               <Link to="/" className="nav-link-home">
                 Home
@@ -38,11 +42,17 @@ const Header = () => {
             </div>
           </>
         ) : (
-          <>
+          <div className="navbar-nav-container">
+          <div>
+              <Link to="/">
+              <h1 className="h1">Itinerary</h1> 
+              </Link>
+            </div> 
+            <div className="navbar-nav">
             <div className="user">
               {localStorage.getItem("token") && (
                 <div className="user-name">
-                  Welcome,{" "}
+                  Welcome{" "}
                   <Link to="/Dashboard" className="nav-link-reg">
                     {localStorage.getItem("name")}
                   </Link>
@@ -54,10 +64,10 @@ const Header = () => {
                 Logout
               </Link>
             </div>
-          </>
+            </div>
+          </div>
         )}
-      </div>
-    </div>
+      </div> 
   );
 };
 

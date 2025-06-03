@@ -162,7 +162,7 @@ const itineraryUpdate = async function (req, res) {
       if (!isValid(totalcost))
         return res
           .status(400)
-          .send({ status: false, message: "Totalcost is required" });
+          .send({ status: false, message: "Total cost is required" });
     }
     let update = await itineraryModel.findByIdAndUpdate(
       { _id: userId },

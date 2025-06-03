@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const {checkInputsPresent,isValid,isValidName,isValidMobile,validateEmail,validPassword} =require("../valid/valid")
 
-const registeruser= async function(req,res)
+const register= async function(req,res)
 {
   try{
        if(!checkInputsPresent(req.body))
@@ -54,19 +54,19 @@ const registeruser= async function(req,res)
 
 }
 
-const loginUser = async function (req, res) {
+const login = async function (req, res) {
   try {
     let data = req.body
     if (!checkInputsPresent(data))
-      return res.status(400).send({ status: false, msg: "Email and Password is Requierd" })
+      return res.status(400).send({ status: false, msg: "Email and Password is required" })
 
     const { email, password } = data
 
     if (!email)
-      return res.status(400).send({ status: false, msg: "User Email is Requierd" })
+      return res.status(400).send({ status: false, msg: "User Email is required" })
 
     if (!password)
-      return res.status(400).send({ status: false, msg: "User Password is Requierd" })
+      return res.status(400).send({ status: false, msg: "User Password is required" })
 
     if (!validateEmail(email))
       return res.status(400).send({ status: false, msg: "Enter Valid Email Id" })
@@ -93,7 +93,7 @@ const loginUser = async function (req, res) {
   }
 }
  
-module.exports={registeruser,loginUser}
+module.exports={register,login}
 
  
 

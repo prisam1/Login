@@ -19,7 +19,7 @@ const Login = () => {
     e.preventDefault()
   
     
-        await fetch(`https://cust-rks8.onrender.com/login`, {
+        await fetch(`https://cust-rks8.onrender.com/api/auth/login`, {
     headers: {
       'Content-Type': 'application/json'
   },
@@ -46,20 +46,11 @@ const Login = () => {
           }
           else
               delete axios.defaults.common.Authorization;
-                 
-           
+         
   })
 
 })     
-
-
-
-
-
-
-
-
-  
+ 
   }
   return (
       <div className="container">

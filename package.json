@@ -1,6 +1,6 @@
 {
   "name": "front",
-  "proxy": "https://cust-rks8.onrender.com/",
+  "proxy": "/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

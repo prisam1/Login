@@ -19,13 +19,13 @@ const CreateIt = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const handlecreateIt = async (e) => {
+  const handleCreateIt = async (e) => {
     e.preventDefault()
 
          
       const token = localStorage.getItem("token");
       
-      const res = await fetch(`https://cust-rks8.onrender.com/CreateItinarary`, {
+      const res = await fetch(`https://cust-rks8.onrender.com/api`, {
         headers: {
           'Content-Type': 'application/json',
           "Authorization": `Bearer ${token}`
@@ -49,8 +49,8 @@ const CreateIt = () => {
   return (
    
       <div className="form-container">
-        <form onSubmit={handlecreateIt} className="itform">
-          <h4 className="title">Create Itinarary</h4>
+        <form onSubmit={handleCreateIt} className="itform">
+          <h4 className="title">Create Itinerary</h4>
          
           <div className="mb-3">
             <input

@@ -17,7 +17,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const res = await fetch(`https://cust-rks8.onrender.com/Register`, {
+    const res = await fetch(`https://cust-rks8.onrender.com/api/auth/Register`, {
       headers: {
         "Content-Type": "application/json",
       },

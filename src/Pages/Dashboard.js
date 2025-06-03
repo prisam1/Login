@@ -1,29 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useItineraries } from "../Hooks/useItineraries";
+import { useItineraries } from "../hooks/useItineraries";
+import { useDebounce } from "../hooks/useDebounce";
 import "../style/dashboard.css";
-
-const ITEMS_PER_PAGE = 10;
 
 const Dashboard = () => {
   const { data, loading, error, currentPage, totalPages, setCurrentPage } =
     useItineraries();
   const navigate = useNavigate();
 
+  const [search, setSearch] = useState("");
+  // const debouncedSearch = useDebounce(search, 500); // 500ms delay
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) navigate("/login");
   }, []);
-
-  //   fetch("https://cust-rks8.onrender.com/ItinararyGet", {
-  //     method: "GET",
-  //     headers: { Authorization: `Bearer ${token}` },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((json) => {
-  //       if (json?.data) setData(json.data);
-  //     });
-  // }, [navigate]);
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);

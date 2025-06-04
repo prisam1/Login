@@ -6,8 +6,7 @@ import { useSelector } from "react-redux";
 import "../../style/header.css";
 
 const Header = () => {
-
-  const { user } = useSelector((state) => state.auth); 
+  const { user } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,13 +19,12 @@ const Header = () => {
   };
 
   return (
-    <div className="header"> 
-        {!localStorage.getItem("token") ? (
-          <div className="navbar-nav-container">
-            
-              <Link to="/" className="h1"> 
-               Itinerary 
-              </Link> 
+    <div className="header">
+      {!localStorage.getItem("token") ? (
+        <div className="navbar-nav-container">
+          <Link to="/" className="h1">
+            Itinerary
+          </Link>
 
           <div className="navbar-nav-2">
             <div>
@@ -44,15 +42,14 @@ const Header = () => {
                 Login
               </Link>
             </div>
-            </div>
           </div>
-        ) : (
-          <div className="navbar-nav-container">
-         
-              <Link to="/" className="h1">
-               Itinerary 
-              </Link> 
-            <div className="navbar-nav">
+        </div>
+      ) : (
+        <div className="navbar-nav-container">
+          <Link to="/Dashboard" className="h1">
+            Itinerary
+          </Link>
+          <div className="navbar-nav">
             <div className="user">
               {localStorage.getItem("token") && (
                 <div className="user-name">
@@ -62,15 +59,14 @@ const Header = () => {
                   </Link>
                 </div>
               )}
-            </div> 
-              <Link onClick={handleLogout} className="logout">
-                Logout
-              </Link>
-           
             </div>
+            <Link onClick={handleLogout} className="logout">
+              Logout
+            </Link>
           </div>
-        )}
-      </div> 
+        </div>
+      )}
+    </div>
   );
 };
 

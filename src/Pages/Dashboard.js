@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useItineraries } from "../hooks/useItineraries";
-import { useDebounce } from "../hooks/useDebounce";
+//import { useDebounce } from "../hooks/useDebounce";
 import "../style/dashboard.css";
 
 const Dashboard = () => {
@@ -38,7 +38,7 @@ const Dashboard = () => {
   return (
     <div className="Dashboard-home">
       <div className="topcontent">
-        <Link to="/CreateIt">
+        <Link to="/create">
           <button className="dashcontent">Create Itinerary</button>
         </Link>
         <button className="dashcontent">Itinerary Update</button>

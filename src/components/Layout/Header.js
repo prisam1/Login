@@ -2,9 +2,13 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/authSlice";
+import { useSelector } from "react-redux";
 import "../../style/header.css";
 
 const Header = () => {
+
+  const { user } = useSelector((state) => state.auth); 
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,13 +22,13 @@ const Header = () => {
   return (
     <div className="header"> 
         {!localStorage.getItem("token") ? (
-          <>
-            <div>
-              <Link to="/">
-              <h1 className="h1">Itinerary</h1> 
-              </Link>
-            </div> 
+          <div className="navbar-nav-container">
+            
+              <Link to="/" className="h1"> 
+               Itinerary 
+              </Link> 
 
+          <div className="navbar-nav-2">
             <div>
               <Link to="/" className="nav-link-home">
                 Home
@@ -40,30 +44,29 @@ const Header = () => {
                 Login
               </Link>
             </div>
-          </>
+            </div>
+          </div>
         ) : (
           <div className="navbar-nav-container">
-          <div>
-              <Link to="/">
-              <h1 className="h1">Itinerary</h1> 
-              </Link>
-            </div> 
+         
+              <Link to="/" className="h1">
+               Itinerary 
+              </Link> 
             <div className="navbar-nav">
             <div className="user">
               {localStorage.getItem("token") && (
                 <div className="user-name">
                   Welcome{" "}
                   <Link to="/Dashboard" className="nav-link-reg">
-                    {localStorage.getItem("name")}
+                    {user}
                   </Link>
                 </div>
               )}
-            </div>
-            <div>
+            </div> 
               <Link onClick={handleLogout} className="logout">
                 Logout
               </Link>
-            </div>
+           
             </div>
           </div>
         )}

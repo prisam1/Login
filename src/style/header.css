@@ -15,9 +15,10 @@
 }
   .h1{
     color: rgb(45, 248, 4);
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:cursive; 
     font-size: 60px;
-    margin-left: 1rem;
+    margin-left: 1rem; 
+    text-decoration: aliceblue;
   }
 
   .navbar-nav-container {
@@ -25,7 +26,7 @@
     align-items: center;
     flex-direction: row; 
     justify-content:space-between;
-    width: 100%;
+    width: 100%; 
   }
    .navbar-nav
   { 
@@ -35,12 +36,22 @@
     margin-right:50px;  
 
   }
+  .navbar-nav-2
+  { 
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-right:50px;  
+    gap:20px
+
+  }
   .nav-link-home{  
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    color:rgb(255, 255, 255); 
+    font-family:cursive; 
+    color:rgb(255, 255, 255);  
     display: inline-block;  
     transition: transform 0.3s ease, color 0.3s ease;
   }
+ 
   .nav-link-home:hover{
     color:rgb(68, 8, 163); 
     transform: scale(1.2);
@@ -48,10 +59,9 @@
   }
   .nav-link-reg{ 
      color:rgb(255, 255, 255); 
-     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+     font-family:cursive;  
      display: inline-block;  
      transition: transform 0.3s ease, color 0.3s ease;
- 
   }
   .nav-link-reg:hover{ 
     color:rgb(68, 8, 163); 
@@ -60,38 +70,35 @@
  
   .nav-link-log{ 
    color:rgb(255, 255, 255); 
-   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+   font-family:cursive; 
    display: inline-block;  
    transition: transform 0.3s ease, color 0.3s ease;
-
   }
+
   .nav-link-log:hover{ 
     color:rgb(68, 8, 163); 
-    transform: scale(1.2);
- 
+    transform: scale(1.2); 
   }
 
 
   .user{
-  
     margin-left: 5px;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family:cursive;
     color:rgb(255, 255, 255); 
     font-weight: 600;
-   
-
   }
 
   .logout{
     margin-left: 5px;
-     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family:cursive;
     color:rgb(255, 255, 255); 
+    text-decoration: none;  
   }
   
   .logout:hover{
    font-family:cursive;
-  color:rgb(68, 8, 163); 
-  font-size:larger;
+   color:rgb(68, 8, 163); 
+   transform: scale(1.2);
   }
  
 .user-name{

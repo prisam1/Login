@@ -54,7 +54,7 @@ const Header = () => {
               {localStorage.getItem("token") && (
                 <div className="user-name">
                   Welcome{" "}
-                  <Link to="/Dashboard" className="nav-link-reg">
+                  <Link to="/Dashboard" className="logout">
                     {user}
                   </Link>
                 </div>

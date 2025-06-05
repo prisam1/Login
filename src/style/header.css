@@ -88,11 +88,11 @@
     font-weight: 600;
   }
 
-  .logout{
-    margin-left: 5px;
+  .logout{ 
     font-family:cursive;
     color:rgb(255, 255, 255); 
     text-decoration: none;  
+    display: inline-block;  
   }
   
   .logout:hover{

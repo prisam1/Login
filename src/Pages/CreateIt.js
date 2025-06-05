@@ -15,7 +15,7 @@ const CreateIt = () => {
     duration: "",
   });
 
-  const { create, loading, error} = useCreateItinerary();
+  const { create, loading } = useCreateItinerary();
 
   const handleChange = (e) => {
     setFormData((prev) => ({

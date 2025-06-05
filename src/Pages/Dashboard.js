@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useItineraries } from "../hooks/useItineraries";
 import "../style/dashboard.css";
@@ -6,12 +6,9 @@ import "../style/dashboard.css";
 const Dashboard = () => {
   const { data, loading, error, currentPage, totalPages, setCurrentPage } =
     useItineraries();
-    
+
   const navigate = useNavigate();
-
-  const [search, setSearch] = useState("");
-  // const debouncedSearch = useDebounce(search, 500); // 500ms delay
-
+ 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) navigate("/login");

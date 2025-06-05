@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { fetchItineraries } from "../Services/Itinerary/itineraryService";
 
 export const useItineraries = (initialPage = 1, limit = 10) => {
@@ -8,7 +8,7 @@ export const useItineraries = (initialPage = 1, limit = 10) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const loadData = async (page = currentPage) => {
+  const loadData = useCallback(async (page = currentPage) => {
     setLoading(true);
     try {
       const res = await fetchItineraries(page, limit);
@@ -19,11 +19,11 @@ export const useItineraries = (initialPage = 1, limit = 10) => {
       setError(err.message || "Failed to fetch");
     }
     setLoading(false);
-  };
+  }, [currentPage, limit]);
 
   useEffect(() => {
-    loadData(currentPage);
-  }, [currentPage, limit]);
+    loadData();
+  }, [loadData]);
 
   return {
     data,

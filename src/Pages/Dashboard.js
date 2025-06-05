@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useItineraries } from "../hooks/useItineraries";
-//import { useDebounce } from "../hooks/useDebounce";
 import "../style/dashboard.css";
 
 const Dashboard = () => {
   const { data, loading, error, currentPage, totalPages, setCurrentPage } =
     useItineraries();
+    
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
@@ -25,7 +25,6 @@ const Dashboard = () => {
       day: "2-digit",
     });
   };
- 
 
   const handlePrev = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));

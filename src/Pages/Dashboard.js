@@ -12,7 +12,7 @@ const Dashboard = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) navigate("/login");
-  }, []);
+  }, [navigate]);
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);

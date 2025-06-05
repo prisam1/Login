@@ -8,22 +8,22 @@ export const useItineraries = (initialPage = 1, limit = 10) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const loadData = async (page) => {
-    setLoading(true);
-    try {
-      const res = await fetchItineraries(page, limit);
-      setData(res.data);
-      setTotalPages(res.totalPages);
-      setCurrentPage(res.currentPage);
-    } catch (err) {
-      setError(err.message || "Failed to fetch");
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
-    loadData(currentPage);
-  }, [currentPage]);
+    const loadData = async () => {
+      setLoading(true);
+      try {
+        const res = await fetchItineraries(currentPage, limit);
+        setData(res.data);
+        setTotalPages(res.totalPages);
+        setCurrentPage(res.currentPage);
+      } catch (err) {
+        setError(err.message || "Failed to fetch");
+      }
+      setLoading(false);
+    };
+
+    loadData();
+  }, [currentPage, limit]);
 
   return {
     data,

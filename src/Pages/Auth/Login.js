@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import axios from "axios"; 
-import { Link, useNavigate } from "react-router-dom"; 
-import useAuth from "../../hooks/useAuth";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogin, useRegister } from "../../hooks/useAuth";
 import "../../style/login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); 
+  const [password, setPassword] = useState("");
 
-  const { loginUser } = useAuth();
+  const { loginUser, loading } = useLogin();
 
   const navigate = useNavigate();
 
@@ -21,10 +21,9 @@ const Login = () => {
         navigate("/Dashboard");
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       } else delete axios.defaults.common.Authorization;
-    } catch (err) { 
+    } catch (err) {
       alert("Invalid credentials");
     }
- 
   };
   return (
     <div className="container">
@@ -55,7 +54,7 @@ const Login = () => {
         </div>
 
         <button type="submit" className="btn btn-primary">
-          LOGIN
+          {loading ? "Logging in..." : "Login"}
         </button>
         <p>
           Don't have an account?{" "}

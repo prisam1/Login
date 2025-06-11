@@ -10,13 +10,15 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     const res = await fetch(`https://cust-rks8.onrender.com/api/auth/Register`, {
       headers: {
         "Content-Type": "application/json",
@@ -27,6 +29,7 @@ const Register = () => {
     const data = await res.json();
     dispatch(register(data));
     navigate("/login");
+    setLoading(false);
   };
 
   return (
@@ -81,7 +84,7 @@ const Register = () => {
         </div>
 
         <button type="submit" className="btn btn-primary">
-          REGISTER
+        {loading ? "Registering..." : "Register"}
         </button>
 
         <p>

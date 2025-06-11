@@ -45,9 +45,4 @@ function App() {
 
 export default App;
 
-// title: "",
-// name: "",
-// phone:"",
-// email: "",
-// password: "",
-// address:""
+ 

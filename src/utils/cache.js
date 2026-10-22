@@ -25,6 +25,16 @@ export const cacheItineraries = (items) => {
 
 export const getCachedItinerary = (id) => read()[id] || null;
 
+export const forgetItinerary = (id) => {
+  try {
+    const cache = read();
+    delete cache[id];
+    sessionStorage.setItem(KEY, JSON.stringify(cache));
+  } catch {
+    /* storage unavailable */
+  }
+};
+
 const ownedKey = (userId) => `owned-itineraries:${userId}`;
 
 const readOwned = (userId) => {

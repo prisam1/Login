@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowRight, CalendarDays, Clock, Eye, Hotel, MapPin, Pencil } from "lucide-react";
+import { ArrowRight, CalendarDays, Clock, Eye, Hotel, LoaderCircle, MapPin, Pencil, Trash2 } from "lucide-react";
 import { display, formatCurrency, formatDate, formatDuration, tripStatus } from "../../utils/format";
 
 export const StatusBadge = ({ date }) => {
@@ -8,7 +8,7 @@ export const StatusBadge = ({ date }) => {
   return <span className={`badge badge-${status.tone}`}>{status.label}</span>;
 };
 
-const ItineraryCard = ({ itinerary, isMine, onView, onEdit, highlight, preview }) => {
+const ItineraryCard = ({ itinerary, isMine, onView, onEdit, onDelete, deleting, highlight, preview }) => {
   const { name, from, to, date, duration, location, hotelName, totalcost } = itinerary;
   const title = display(name) === "—" ? "Untitled trip" : display(name);
 
@@ -16,7 +16,6 @@ const ItineraryCard = ({ itinerary, isMine, onView, onEdit, highlight, preview }
     <article className={`trip-card card ${highlight ? "is-highlighted" : ""} ${preview ? "is-preview" : ""}`}>
       <div className="trip-card-top">
         <StatusBadge date={date} />
-        {isMine && <span className="badge badge-info">Yours</span>}
       </div>
 
       <h3 className="trip-card-title" title={title}>
@@ -82,8 +81,20 @@ const ItineraryCard = ({ itinerary, isMine, onView, onEdit, highlight, preview }
                 <Eye />
               </button>
             )}
+            {isMine && onDelete && (
+              <button
+                type="button"
+                className="btn btn-ghost btn-icon btn-sm btn-ghost-danger"
+                onClick={onDelete}
+                disabled={deleting}
+                aria-label={`Delete ${title}`}
+                title="Delete"
+              >
+                {deleting ? <LoaderCircle className="spin" /> : <Trash2 />}
+              </button>
+            )}
             {isMine && onEdit && (
-              <button type="button" className="btn btn-secondary btn-sm" onClick={onEdit} aria-label={`Edit ${title}`}>
+              <button type="button" className="btn btn-secondary btn-sm" onClick={onEdit} disabled={deleting} aria-label={`Edit ${title}`}>
                 <Pencil /> Edit
               </button>
             )}

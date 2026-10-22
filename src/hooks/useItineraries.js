@@ -3,9 +3,10 @@ import { fetchItineraries } from "../Services/Itinerary/itineraryService";
 import { getErrorMessage } from "../Services/errors";
 import { cacheItineraries } from "../utils/cache";
 
-export const useItineraries = ({ page, limit, search, sortBy }) => {
+export const useItineraries = ({ page, limit, search, sortBy, order }) => {
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
+  const [total, setTotal] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
@@ -22,10 +23,11 @@ export const useItineraries = ({ page, limit, search, sortBy }) => {
     else setLoading(true);
 
     try {
-      const res = await fetchItineraries({ page, limit, search, sortBy }, controller.signal);
+      const res = await fetchItineraries({ page, limit, search, sortBy, order }, controller.signal);
       if (controller.signal.aborted) return;
       setData(res.data);
       setTotalPages(res.totalPages);
+      setTotal(res.total);
       setError(null);
       setLastLoaded(new Date());
       cacheItineraries(res.data);
@@ -40,7 +42,7 @@ export const useItineraries = ({ page, limit, search, sortBy }) => {
         setRefreshing(false);
       }
     }
-  }, [page, limit, search, sortBy]);
+  }, [page, limit, search, sortBy, order]);
 
   useEffect(() => {
     loadData();
@@ -50,6 +52,7 @@ export const useItineraries = ({ page, limit, search, sortBy }) => {
   return {
     data,
     totalPages,
+    total,
     loading,
     refreshing,
     error,

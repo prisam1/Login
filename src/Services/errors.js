@@ -34,5 +34,6 @@ export const getErrorMessage = (error, fallback = "Something went wrong. Please 
 export const isDuplicateEmailError = (error) => {
   const data = error?.response?.data;
   const raw = [data?.message, data?.msg, data?.error].find((m) => typeof m === "string") || "";
+  if (error?.response?.status === 409) return true;
   return /E11000|duplicate key/i.test(raw) && /email/i.test(raw);
 };

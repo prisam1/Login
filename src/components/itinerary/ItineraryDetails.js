@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowRight, CalendarDays, Clock, Copy, CopyPlus, Hotel, MapPin, Pencil, Wallet } from "lucide-react";
+import { ArrowRight, CalendarDays, Clock, Copy, CopyPlus, Hotel, MapPin, Pencil, Trash2, Wallet } from "lucide-react";
 import { toast } from "react-toastify";
 import Modal from "../common/Modal";
 import { StatusBadge } from "./ItineraryCard";
@@ -38,7 +38,7 @@ const copyToClipboard = async (text) => {
   }
 };
 
-const ItineraryDetails = ({ itinerary, isMine, onClose, onEdit, onDuplicate }) => {
+const ItineraryDetails = ({ itinerary, isMine, onClose, onEdit, onDuplicate, onDelete }) => {
   if (!itinerary) return null;
   const it = itinerary;
   const weekday = formatWeekday(it.date);
@@ -52,6 +52,11 @@ const ItineraryDetails = ({ itinerary, isMine, onClose, onEdit, onDuplicate }) =
       title={display(it.name) === "—" ? "Untitled trip" : display(it.name)}
       footer={
         <>
+          {isMine && onDelete && (
+            <button type="button" className="btn btn-ghost btn-ghost-danger details-delete" onClick={onDelete}>
+              <Trash2 aria-hidden="true" /> Delete
+            </button>
+          )}
           <button type="button" className="btn btn-secondary" onClick={() => copyToClipboard(summaryText(it))}>
             <Copy aria-hidden="true" /> Copy
           </button>
@@ -68,7 +73,6 @@ const ItineraryDetails = ({ itinerary, isMine, onClose, onEdit, onDuplicate }) =
     >
       <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginBottom: "1rem" }}>
         <StatusBadge date={it.date} />
-        {isMine && <span className="badge badge-info">Yours</span>}
       </div>
 
       <div className="details-route">

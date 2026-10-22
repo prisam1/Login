@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { CloudOff, Compass, Eye, LayoutGrid, List, Pencil, Plus, RefreshCw, Search, SearchX, X } from "lucide-react";
+import { toast } from "react-toastify";
+import { CloudOff, Compass, Eye, LayoutGrid, List, LoaderCircle, Pencil, Plus, RefreshCw, Search, SearchX, Trash2, X } from "lucide-react";
 import { useItineraries } from "../hooks/useItineraries";
 import { useDebounce } from "../hooks/useDebounce";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
@@ -10,16 +11,21 @@ import ItineraryCard, { StatusBadge } from "../components/itinerary/ItineraryCar
 import ItineraryDetails from "../components/itinerary/ItineraryDetails";
 import Pagination from "../components/itinerary/Pagination";
 import EmptyState from "../components/common/EmptyState";
+import ConfirmDialog from "../components/common/ConfirmDialog";
+import { useDeleteItinerary } from "../hooks/useCreateItinerary";
 import { isOwnedBy } from "../utils/cache";
-import { display, escapeRegex, firstName, formatCurrency, formatDate, formatDuration } from "../utils/format";
+import { display, firstName, formatCurrency, formatDate, formatDuration } from "../utils/format";
 import "../style/dashboard.css";
 
 const SORTS = [
-  { value: "date", label: "Date" },
-  { value: "name", label: "Name A–Z" },
-  { value: "totalcost", label: "Lowest cost" },
-  { value: "createdAt", label: "Oldest" },
+  { value: "date:asc", label: "Soonest" },
+  { value: "date:desc", label: "Latest" },
+  { value: "createdAt:desc", label: "Newest" },
+  { value: "name:asc", label: "Name A–Z" },
+  { value: "totalcost:desc", label: "Highest cost" },
+  { value: "totalcost:asc", label: "Lowest cost" },
 ];
+const DEFAULT_SORT = "date:asc";
 const PAGE_SIZES = [6, 12, 24, 48];
 const DEFAULT_LIMIT = 12;
 
@@ -58,7 +64,8 @@ const Dashboard = () => {
 
   const page = readInt(params.get("page"), 1);
   const limit = readInt(params.get("limit"), DEFAULT_LIMIT, { allowed: PAGE_SIZES });
-  const sortBy = SORTS.some((s) => s.value === params.get("sort")) ? params.get("sort") : "date";
+  const sort = SORTS.some((s) => s.value === params.get("sort")) ? params.get("sort") : DEFAULT_SORT;
+  const [sortBy, order] = sort.split(":");
   const view = params.get("view") === "table" ? "table" : "grid";
   const urlQuery = (params.get("q") || "").slice(0, 80);
 
@@ -109,8 +116,24 @@ const Dashboard = () => {
     return () => clearTimeout(t);
   }, [highlight]);
 
-  const search = urlQuery.trim() ? escapeRegex(urlQuery.trim()) : "";
-  const { data, totalPages, loading, refreshing, error, lastLoaded, reload } = useItineraries({ page, limit, search, sortBy });
+  const search = urlQuery.trim();
+  const { data, totalPages, total, loading, refreshing, error, lastLoaded, reload } = useItineraries({ page, limit, search, sortBy, order });
+  const { remove, deletingId } = useDeleteItinerary();
+  const [pendingDelete, setPendingDelete] = useState(null);
+
+  const confirmDelete = async () => {
+    const target = pendingDelete;
+    setPendingDelete(null);
+    if (!target) return;
+    const result = await remove(target);
+    if (result.ok) {
+      toast.success(`“${display(target.name)}” deleted.`);
+      if (selected?._id === target._id) setSelected(null);
+      reload();
+    } else {
+      toast.error(result.message);
+    }
+  };
 
   useEffect(() => {
     if (!loading && !error && totalPages > 0 && page > totalPages) updateParams({ page: totalPages }, { resetPage: false });
@@ -208,11 +231,6 @@ const Dashboard = () => {
               <tr key={it._id || i} className={highlight && it._id === highlight ? "is-highlighted" : ""}>
                 <td className="cell-strong" title={display(it.name)}>
                   {display(it.name)}
-                  {mine && (
-                    <span className="badge badge-info" style={{ marginLeft: "0.5rem" }}>
-                      Yours
-                    </span>
-                  )}
                 </td>
                 <td title={display(it.from)}>{display(it.from)}</td>
                 <td title={display(it.to)}>{display(it.to)}</td>
@@ -235,6 +253,17 @@ const Dashboard = () => {
                         <Pencil />
                       </button>
                     )}
+                    {mine && (
+                      <button
+                        type="button"
+                        className="btn btn-ghost btn-icon btn-sm btn-ghost-danger"
+                        onClick={() => setPendingDelete(it)}
+                        disabled={deletingId === it._id}
+                        aria-label={`Delete ${display(it.name)}`}
+                      >
+                        {deletingId === it._id ? <LoaderCircle className="spin" /> : <Trash2 />}
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>
@@ -254,6 +283,8 @@ const Dashboard = () => {
             highlight={highlight && it._id === highlight}
             onView={() => setSelected(it)}
             onEdit={() => openEdit(it)}
+            onDelete={() => setPendingDelete(it)}
+            deleting={deletingId === it._id}
           />
         ))}
       </div>
@@ -266,7 +297,13 @@ const Dashboard = () => {
         <div>
           <p className="eyebrow">{greeting()}</p>
           <h1 className="page-title">Welcome, {firstName(user)}</h1>
-          <p className="page-subtitle">Browse, search and manage itineraries.</p>
+          <p className="page-subtitle">
+            {total === null || loading
+              ? "Plan, search and manage your trips."
+              : total === 0
+              ? "You haven't planned any trips yet."
+              : `You have ${total} ${total === 1 ? "itinerary" : "itineraries"}.`}
+          </p>
         </div>
         <div className="dash-hero-actions">
           {lastLoaded && (
@@ -294,7 +331,7 @@ const Dashboard = () => {
             id="search"
             type="search"
             className="input"
-            placeholder="Search by trip name or location"
+            placeholder="Search trips, places or hotels"
             value={query}
             maxLength={80}
             onChange={(e) => setQuery(e.target.value)}
@@ -315,7 +352,7 @@ const Dashboard = () => {
           <label className="sr-only" htmlFor="sort">
             Sort by
           </label>
-          <select id="sort" className="input" value={sortBy} onChange={(e) => updateParams({ sort: e.target.value === "date" ? "" : e.target.value })}>
+          <select id="sort" className="input" value={sort} onChange={(e) => updateParams({ sort: e.target.value === DEFAULT_SORT ? "" : e.target.value })}>
             {SORTS.map((s) => (
               <option key={s.value} value={s.value}>
                 Sort: {s.label}
@@ -348,7 +385,12 @@ const Dashboard = () => {
           <span>
             {hasSearch ? (
               <>
-                Results for <strong>“{urlQuery.trim()}”</strong> ·{" "}
+                {total !== null && (
+                  <>
+                    <strong>{total}</strong> {total === 1 ? "result" : "results"}{" "}
+                  </>
+                )}
+                for <strong>“{urlQuery.trim()}”</strong> ·{" "}
               </>
             ) : null}
             Page <strong>{Math.min(page, Math.max(totalPages, 1))}</strong> of <strong>{Math.max(totalPages, 1)}</strong>
@@ -383,6 +425,17 @@ const Dashboard = () => {
         onClose={() => setSelected(null)}
         onEdit={() => openEdit(selected)}
         onDuplicate={() => duplicate(selected)}
+        onDelete={() => setPendingDelete(selected)}
+      />
+
+      <ConfirmDialog
+        open={!!pendingDelete}
+        title="Delete this itinerary?"
+        description={`“${display(pendingDelete?.name)}” will be permanently deleted. This can't be undone.`}
+        confirmLabel="Delete"
+        danger
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDelete(null)}
       />
     </div>
   );

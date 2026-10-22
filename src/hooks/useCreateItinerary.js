@@ -1,9 +1,9 @@
 import { useCallback, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { createItinerary, updateItinerary } from "../Services/Itinerary/itineraryService";
+import { createItinerary, deleteItinerary, updateItinerary } from "../Services/Itinerary/itineraryService";
 import { getErrorMessage } from "../Services/errors";
 import { selectAuth } from "../redux/authSlice";
-import { cacheItineraries, rememberOwned } from "../utils/cache";
+import { cacheItineraries, forgetItinerary, rememberOwned } from "../utils/cache";
 
 export const useSaveItinerary = () => {
   const [loading, setLoading] = useState(false);
@@ -41,4 +41,25 @@ export const useSaveItinerary = () => {
   );
 
   return { save, loading, error, clearError: () => setError(null) };
+};
+
+export const useDeleteItinerary = () => {
+  const [deletingId, setDeletingId] = useState(null);
+
+  const remove = useCallback(async (itinerary) => {
+    setDeletingId(itinerary._id);
+    try {
+      await deleteItinerary(itinerary._id);
+      forgetItinerary(itinerary._id);
+      return { ok: true };
+    } catch (err) {
+      const notFound = err?.response?.status === 404;
+      if (notFound) forgetItinerary(itinerary._id);
+      return { ok: notFound, message: notFound ? null : getErrorMessage(err, "Failed to delete itinerary.") };
+    } finally {
+      setDeletingId(null);
+    }
+  }, []);
+
+  return { remove, deletingId };
 };

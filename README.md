@@ -25,8 +25,9 @@ A responsive React app for planning trips. Create an account, then record each i
 ### Itineraries
 - **Dashboard:**
   - grid and table views
-  - search by trip name or location (special characters are escaped safely)
-  - sort by date, name, cost or creation order
+  - search across trip name, places and hotel
+  - sort soonest or latest, newest added, name, or highest or lowest cost
+  - delete with a confirmation step
   - 6, 12, 24 or 48 items per page, with numbered pagination
   - every filter is kept in the URL, so it survives a refresh and can be shared
 - **Trip status badges:** Today, Tomorrow, In N days, Upcoming, Completed, or No date for older free-text entries.
@@ -39,8 +40,8 @@ A responsive React app for planning trips. Create an account, then record each i
   - start and destination must be different
   - past dates are allowed but flagged
 - **Unsaved-changes guard:** a confirmation dialog when you navigate away inside the app, plus the browser prompt when you close or reload the tab.
-- **The edit page survives a refresh:** the itinerary is cached for the session.
-- **Ownership:** the user ID is taken from your session (you no longer type it), and only your own itineraries show an Edit button.
+- **The edit page works from a link or after a refresh:** the itinerary is loaded from the API.
+- **Private:** you only see your own itineraries, and the user ID comes from your session.
 
 ### UX and accessibility
 - Light and dark themes. The app follows the system setting until you choose, and loads without a flash of the wrong theme.
@@ -136,11 +137,15 @@ The backend lives on the `backend` branch (Express + MongoDB).
 
 | Method | Endpoint | Used for |
 | ------ | -------- | -------- |
-| POST | `/auth/Register` | Create account (`name`, `email`, `phone`, `password`) |
+| POST | `/auth/register` | Create account (`name`, `email`, `phone`, `password`) |
 | POST | `/auth/login` | Log in → `{ data: { userId, name, token } }` |
-| GET | `/itinerary?page&limit&search&sortBy` | List itineraries |
+| GET | `/itinerary?page&limit&search&sortBy&order` | List your itineraries (`{ data, total, totalPages }`) |
+| GET | `/itinerary/:id` | Load one itinerary (edit page) |
 | POST | `/itinerary` | Create itinerary |
-| PUT | `/itinerary` | Update itinerary (the itinerary id is sent in `userId`, as the API expects) |
+| PUT | `/itinerary/:id` | Update itinerary |
+| DELETE | `/itinerary/:id` | Delete itinerary |
+
+See the backend README on the `backend` branch for full details.
 
 ---
 

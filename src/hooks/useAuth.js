@@ -1,68 +1,67 @@
+import { useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { login as loginAction } from "../redux/authSlice";
 import { login, register } from "../Services/auth/authServices";
-import { useNavigate } from "react-router-dom";
-//import { toast } from "sonner";
+import { getErrorMessage, isDuplicateEmailError } from "../Services/errors";
+import { isTokenValid } from "../utils/session";
 
 export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const inFlight = useRef(false);
   const dispatch = useDispatch();
 
-  const loginUser = async (email, password) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await login(email, password);
+  const loginUser = useCallback(
+    async (email, password) => {
+      if (inFlight.current) return false;
+      inFlight.current = true;
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await login(email.trim(), password);
+        const { token, name, userId } = res?.data || {};
+        if (!isTokenValid(token)) throw new Error("We couldn't start your session. Please try again.");
+        localStorage.removeItem("token");
+        dispatch(loginAction({ token, user: name, userId }));
+        return true;
+      } catch (err) {
+        setError(getErrorMessage(err, "Login failed. Please try again."));
+        return false;
+      } finally {
+        inFlight.current = false;
+        setLoading(false);
+      }
+    },
+    [dispatch]
+  );
 
-      const { token, name } = res.data.data;
-
-      dispatch(loginAction({ token, user: name }));
-
-      localStorage.setItem("token", token);
-
-      return token;
-    } catch (err) {
-      setError(err.response?.data?.error || "An error occurred");
-      // toast.error(
-      //   err.response?.data?.error ||
-      //     "An unexpected error occurred. Please try again"
-      // );
-    } finally {
-      setLoading(false);
-    }
-  };
-  return { loginUser, loading, error };
+  return { loginUser, loading, error, clearError: () => setError(null) };
 };
 
 export const useRegister = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const inFlight = useRef(false);
 
-  const navigate = useNavigate();
-
-  const handleRegister = async (name, email, phone, password) => {
+  const handleRegister = useCallback(async ({ name, email, phone, password }) => {
+    if (inFlight.current) return { ok: false };
+    inFlight.current = true;
     setLoading(true);
     setError(null);
-
     try {
       await register(name, email, phone, password);
-      // toast.success("Please login to continue");
-      navigate("/login");
+      return { ok: true };
     } catch (err) {
-      setError(
-        err.response?.data?.error ||
-          "An unexpected error occurred. Please try again"
-      );
-      // toast.error(
-      //   err.response?.data?.error ||
-      //     "An unexpected error occurred. Please try again"
-      // );
+      if (isDuplicateEmailError(err)) {
+        return { ok: false, field: "email", message: "An account with this email already exists." };
+      }
+      setError(getErrorMessage(err, "Registration failed. Please try again."));
+      return { ok: false };
     } finally {
+      inFlight.current = false;
       setLoading(false);
     }
-  };
+  }, []);
 
-  return { handleRegister, loading, error };
+  return { handleRegister, loading, error, clearError: () => setError(null) };
 };

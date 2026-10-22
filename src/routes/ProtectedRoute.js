@@ -1,10 +1,22 @@
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import { selectAuth } from "../redux/authSlice";
+import { isTokenValid, safeRedirect } from "../utils/session";
 
 const ProtectedRoute = ({ children }) => {
-  const { token } = useSelector((state) => state.auth); 
+  const { token } = useSelector(selectAuth);
+  const location = useLocation();
 
-  return token ? children : <Navigate to="/login" replace />;
+  if (!isTokenValid(token)) {
+    return <Navigate to="/login" replace state={{ from: `${location.pathname}${location.search}` }} />;
+  }
+  return children;
+};
+
+export const GuestRoute = ({ children }) => {
+  const { token } = useSelector(selectAuth);
+  const location = useLocation();
+  return isTokenValid(token) ? <Navigate to={safeRedirect(location.state?.from)} replace /> : children;
 };
 
 export default ProtectedRoute;

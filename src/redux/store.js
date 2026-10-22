@@ -1,18 +1,16 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import {
-    persistStore,
-    persistReducer,
-    FLUSH,
-    REHYDRATE,
-    PAUSE,
-    PERSIST,
-    PURGE,
-    REGISTER,
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authSlice from "./authSlice";
-//import searchSlice from "./searchSlice";
-
 
 const persistConfig = {
   key: "root",
@@ -22,8 +20,7 @@ const persistConfig = {
 
 const reducers = combineReducers({
   auth: authSlice,
-  //search: searchSlice,
-})
+});
 
 const persistedReducer = persistReducer(persistConfig, reducers);
 
@@ -37,4 +34,4 @@ export const store = configureStore({
     }),
 });
 
-export let persistor = persistStore(store);
+export const persistor = persistStore(store);

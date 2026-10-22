@@ -1,48 +1,39 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-import HomePage from "./Pages/HomePage";
-import Pagenotfound from "./Pages/PageNotFound";
-import Register from "./Pages/Auth/Register";
-import Login from "./Pages/Auth/Login";
-import Footer from "./components/Layout/Footer";
+import { Outlet, ScrollRestoration } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Header from "./components/Layout/Header";
-import Dashboard from "./Pages/Dashboard";
-import CreateIt from "./Pages/CreateIt";
-import ProtectedRoute from "./routes/ProtectedRoute";
-
-import "../src/App.css";
+import Footer from "./components/Layout/Footer";
+import SessionWatcher from "./components/common/SessionWatcher";
+import OfflineBanner from "./components/common/OfflineBanner";
+import { useTheme } from "./hooks/useTheme";
 
 function App() {
+  const themeState = useTheme();
+
   return (
-    <>
-      <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/Register" element={<Register />} /> 
-         <Route
-          path="/Dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        /> 
-        <Route
-          path="/Create"
-          element={
-            <ProtectedRoute>
-              <CreateIt />
-            </ProtectedRoute>
-          }
-        /> 
-        <Route path="*" element={<Pagenotfound />} />
-      </Routes>
+    <div className="layout-container">
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+      <SessionWatcher />
+      <Header {...themeState} />
+      <main id="main" className="layout-main" tabIndex={-1}>
+        <Outlet />
+      </main>
       <Footer />
-    </>
+      <OfflineBanner />
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss={false}
+        limit={4}
+        theme={themeState.theme === "dark" ? "dark" : "light"}
+      />
+      <ScrollRestoration />
+    </div>
   );
 }
 
 export default App;
-
- 

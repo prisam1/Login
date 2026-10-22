@@ -1,100 +1,491 @@
-.Dashboard-home { 
-    padding: 2rem 1rem;
-    background-color: #f5f5f5;
-    min-height: 78vh;
+.dash-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.dash-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.last-updated {
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+}
+
+/* Toolbar */
+.toolbar {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.toolbar-search {
+  position: relative;
+}
+
+.toolbar-search .input {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.toolbar-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.view-toggle {
+  display: none;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+
+.view-toggle button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  color: var(--text-subtle);
+}
+
+.view-toggle button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.view-toggle button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--primary-text);
+  box-shadow: var(--shadow-sm);
+}
+
+.results-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.results-meta strong {
+  color: var(--text);
+}
+
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--primary-text);
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+
+.link-button svg {
+  width: 15px;
+  height: 15px;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}
+
+.is-refreshing {
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+/* Grid */
+.trip-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.trip-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.15rem;
+  min-width: 0;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.trip-card:not(.is-preview):hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
+}
+
+.trip-card.is-highlighted {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft), var(--shadow-md);
+}
+
+.trip-card-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.trip-card-title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trip-card-link {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+  font-weight: inherit;
+  color: var(--text);
+}
+
+.trip-card-link:hover {
+  color: var(--primary-text);
+}
+
+.trip-route {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-weight: 600;
+  font-size: 0.92rem;
+  min-width: 0;
+}
+
+.trip-route svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.trip-route-place {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trip-route-place:last-child {
+  text-align: right;
+}
+
+.trip-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem 0.75rem;
+}
+
+.trip-meta div {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.trip-meta dt {
+  display: flex;
+  color: var(--text-subtle);
+}
+
+.trip-meta dt svg {
+  width: 16px;
+  height: 16px;
+}
+
+.trip-meta dd {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.trip-card-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--border);
+}
+
+.trip-cost-label {
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+}
+
+.trip-cost {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.trip-actions {
+  display: flex;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+/* Table */
+.trip-table-wrap {
+  overflow-x: auto;
+}
+
+.trip-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.trip-table th {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  background: var(--surface-2);
+  white-space: nowrap;
+}
+
+.trip-table td {
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  vertical-align: middle;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trip-table tbody tr:hover td {
+  background: var(--surface-hover);
+}
+
+.trip-table tr.is-highlighted td {
+  background: var(--primary-soft);
+}
+
+.trip-table .cell-strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.trip-table .cell-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.trip-table th.cell-num {
+  text-align: right;
+}
+
+.trip-table .cell-actions {
+  text-align: right;
+  overflow: visible;
+}
+
+.trip-table .cell-actions > div {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+/* Skeleton card */
+.trip-card-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.15rem;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin-top: 1.75rem;
+}
+
+.pagination button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 0.7rem;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pagination button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.pagination button:hover:not(:disabled) {
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+
+.pagination button[aria-current="page"] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.pagination button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pagination-ellipsis {
+  padding: 0 0.25rem;
+  color: var(--text-subtle);
+}
+
+.pagination-label {
+  display: none;
+}
+
+/* Details modal */
+.details-route {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+.details-route > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.details-route svg {
+  width: 20px;
+  height: 20px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.details-route p:first-child {
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+}
+
+.details-route p:last-child {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.details-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.details-list dt {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--text-subtle);
+}
+
+.details-list dt svg {
+  width: 14px;
+  height: 14px;
+}
+
+.details-list dd {
+  margin-top: 0.15rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.details-list .span-2 {
+  grid-column: 1 / -1;
+}
+
+.details-meta {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-subtle);
+}
+
+@media (min-width: 640px) {
+  .trip-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  
-  .topcontent {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-  
-  .dashcontent {
-    background: linear-gradient(to right, #facc15, #fde68a);
-    color: #1e40af;
-    padding: 10px 16px;
-    border-radius: 6px;
-    font-weight: 600;
-    border: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-  
-  .dashcontent:hover {
-    background: linear-gradient(to right, #7c3aed, #ec4899);
-    color: white;
-    transform: scale(1.05);
-  }
-  
-  .datacontent {
-    display: flex;
-    justify-content: center;
+  .toolbar {
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
   }
-  
-  .table-container {
-    width: 100%;
-    overflow-x: auto;
+  .toolbar-controls {
+    grid-template-columns: repeat(2, minmax(150px, auto));
   }
-  
-  .styled-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  .pagination-label {
+    display: inline;
   }
-  
-  .styled-table th,
-  .styled-table td {
-    padding: 12px 16px;
-    text-align: left;
+}
+
+@media (min-width: 900px) {
+  .toolbar-controls {
+    grid-template-columns: repeat(2, minmax(160px, auto)) auto;
   }
-  
-  .styled-table thead {
-    background-color: #1e3a8a;
-    color: white;
+  .view-toggle {
+    display: inline-flex;
   }
-  
-  .styled-table tbody tr:nth-child(even) {
-    background-color: #f9fafb;
+}
+
+@media (min-width: 1024px) {
+  .trip-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  
-  .styled-table tbody tr:hover {
-    background-color: #e0f2fe;
-    cursor: pointer;
-  }
-  
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-  
-  .pagination button {
-    padding: 6px 12px;
-    font-weight: 600;
-    border: none;
-    border-radius: 6px;
-    background-color: #1e3a8a;
-    color: white;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  
-  .pagination button:disabled {
-    background-color: #cbd5e1;
-    cursor: not-allowed;
-  }
-  
-  .pagination span {
-    font-weight: 500;
-    color: #1f2937;
-  }
-  
+}

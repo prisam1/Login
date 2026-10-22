@@ -1,14 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const {createItinerary, itineraryUpdate, itineraryGet } = require("../controller/itineraryController");
- 
-const { authenticate, refreshToken } = require("../auth/auth");
+const {
+  createItinerary,
+  itineraryGet,
+  itineraryGetOne,
+  itineraryUpdate,
+  itineraryUpdateLegacy,
+  itineraryDelete,
+} = require("../controller/itineraryController");
+const { authenticate } = require("../auth/auth");
+const { asyncHandler, writeLimiter } = require("../middleware");
 
- 
-router.post("/", authenticate, createItinerary);
-router.put("/", authenticate, itineraryUpdate);
-router.get("/", authenticate, itineraryGet);
+router.use(asyncHandler(authenticate));
 
- 
+router.get("/", asyncHandler(itineraryGet));
+router.get("/:id", asyncHandler(itineraryGetOne));
+router.post("/", writeLimiter, asyncHandler(createItinerary));
+router.put("/", writeLimiter, asyncHandler(itineraryUpdateLegacy));
+router.put("/:id", writeLimiter, asyncHandler(itineraryUpdate));
+router.patch("/:id", writeLimiter, asyncHandler(itineraryUpdate));
+router.delete("/:id", writeLimiter, asyncHandler(itineraryDelete));
 
 module.exports = router;

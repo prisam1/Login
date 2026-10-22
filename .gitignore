@@ -1,11 +1,7 @@
-# dependencies
-/node_modules
-
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+node_modules/
 .env
+.env.*
+!.env.example
+.DS_Store
+npm-debug.log*
+coverage/
